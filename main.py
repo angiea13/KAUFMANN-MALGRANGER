@@ -2,35 +2,19 @@ import sys
 import copy
 import data
 
+#LA LÓGICA ESTÁ MALA MALÍSIMA
 def mult_latina(matrizH, matrizH1, orden):
-    tempMatrix = copy.deepcopy(matrizH1)
+    # matriz resultado, inicializada en vacío
+    tempMatrix = [[0 for _ in range(orden)] for _ in range(orden)]
+    
     for i in range(orden):
         for j in range(orden):
-            cont_comb = 0
-            ACT_ult_dig = str(matrizH[i][j])[-1]
-            print("Último digito vaino: " + ACT_ult_dig)
-            if ACT_ult_dig != "0":
-                for k in range(orden):
-                    print("Matriz destino vaino: " + matrizH1[i][k])
-                    if str(matrizH1[i][k])[0] == ACT_ult_dig and cont_comb == 0:
-                        tempMatrix[i][j] = ACT_ult_dig + str(matrizH1[i][k])[1:]
-                        print("Encontrado amen")
-                        cont_comb += 1
-                    elif str(matrizH1[i][k])[0] == ACT_ult_dig and cont_comb > 0:
-                        tempMatrix[i][j] += "," + ACT_ult_dig + str(matrizH1[i][k])[1:]
-                for k in range(orden):
-                    print(f"Matriz destino vaino {k}: " + matrizH1[k][j])
-                    if str(matrizH1[k][j])[0] == ACT_ult_dig and cont_comb == 0:
-                        tempMatrix[i][j] = ACT_ult_dig + str(matrizH1[k][j])[1:]
-                        print("Encontrado amen")
-                        cont_comb += 1
-                    elif str(matrizH1[k][j])[0] == ACT_ult_dig and cont_comb > 0:
-                        tempMatrix[i][j] += "," + ACT_ult_dig + str(matrizH1[k][j])[1:]
-            else:
-                tempMatrix[i][j] = "0"
-            if cont_comb == 0:
-                tempMatrix[i][j] = "0"
-            print(tempMatrix[i][j], end="       ")
+            for k in range(orden):
+                camino1 = set(matrizH[i][k])
+                camino2 = set(matrizH1[k][j])                
+                if set(camino1) & set(camino2) == {k}:
+                    tempMatrix[i][j] += str(set(camino1)) + str(set(camino2)[1:])                        
+            print(str(tempMatrix[i][j]), end="      ")
         print()
     return tempMatrix
 
